@@ -2,7 +2,11 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -43,8 +47,28 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (Throwable $exception, $request) {
+
+            
+            if($exception instanceof AuthenticationException)
+            {
+                return error("Can't access this page without Login!!!",type:'unauthenticated');
+            }
+           else if($exception instanceof RouteNotFoundException)
+            {
+                return error("Can't access this page without Login!!!",type:'unauthenticated');
+            }
+
+            else if($exception instanceof NotFoundHttpException)
+            {
+                return error(type:'notfound');
+            }
+
+            else if ($exception instanceof ThrottleRequestsException) {
+                return error('Too Many Attempts');
+            }
+            // else 
+            //     return $request;
         });
     }
 }
