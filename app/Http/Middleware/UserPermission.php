@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Permission;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,14 +18,25 @@ class UserPermission
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next,$model,$access)
     {   
-        $userRole = Auth::user()->roles->pluck('name')->toArray();
-        $user = 
-        dd($userRole);
-        //dd($userRole[0]);
+        //dd([$model,$access]);
+        //$userRole = Auth::user()->roles->pluck('name')->toArray();
+        //$permission = auth()->user()->roles()->with('permissions.modules')->get()->pluck('permissions')->flatten();
+        $permissions = auth()->user()->roles()->with('permissions.modules')->get();//->pluck('permissions');
 
-        if($userRole[0] == 'Hr')
+        // foreach($permissions as $permission)
+        // {
+        //     dd($permission);
+        // }
+        //dd($permission->modules());
+         // if(count($permission[0]))
+        // {
+        //     return $next($request);
+        // }
+        
+        $user = auth()->user();
+        if($user->hasAccess($model,$access))
         {
             return $next($request);
         }
