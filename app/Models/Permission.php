@@ -31,7 +31,6 @@ class Permission extends Model
 
       public function hasAccess($model ,$access)
       {
-         $arr = [];
          $result = false;
          foreach ($this->modules as $module) {
             $modelName = $module->where('name',$model)->first();
