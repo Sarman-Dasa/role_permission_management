@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\auth\AuthController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
@@ -33,7 +34,7 @@ Route::controller(AuthController::class)->group(function () {
 /**
  * Role 
  */
-Route::controller(RoleController::class)->middleware(['auth:sanctum','user-permission'])->prefix('role')->group(function()
+Route::controller(RoleController::class)->middleware(['auth:sanctum'])->prefix('role')->group(function()
 {
     Route::post('list', 'list');
     Route::post('create', 'create');
@@ -75,3 +76,20 @@ Route::controller(PermissionController::class)->prefix('permission')->group(func
     Route::get('get/{id}', 'get');
     Route::delete('delete/{id}', 'destroy');
 });
+
+Route::controller(EmployeeController::class)->middleware(['auth:sanctum'])->prefix('employee')->group(function(){
+    Route::post('list', 'list')->middleware('user-permission:Employee,view_access');
+    Route::post('create', 'create')->middleware('user-permission:Employee,add_access');;
+    Route::post('update/{id}', 'update')->middleware('user-permission:Employee,update_access');;
+    Route::get('get/{id}', 'get')->middleware('user-permission:Employee,view_access');;
+    Route::delete('delete/{id}', 'destroy')->middleware('user-permission:Employee,delete_access');;
+});
+
+
+Route::middleware(['auth:sanctum'])->prefix('intern')->group(function(){
+    Route::get('list',function(){
+        return "Permission";
+    })->middleware('user-permission:Intern,view_access');
+});
+
+
