@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use LDAP\Result;
 
 class Permission extends Model
 {
@@ -26,6 +27,29 @@ class Permission extends Model
       public function roles()
       {
          return $this->belongsToMany(Role::class,'role_permissions','permission_id','role_id');
+      }
+
+      public function hasAccess($model ,$access)
+      {
+         $arr = [];
+         $result = false;
+         foreach ($this->modules as $module) {
+            $modelName = $module->where('name',$model)->first();
+            
+            //dd([$module->pivot->module_id == $m->id ,$module->pivot->$access]);
+            // dd([$m ,$module->pivot]);
+            //dd($m);
+            if($modelName && ($module->pivot->module_id == $modelName->id && $module->pivot->$access))
+            {
+               $result =  true;
+               break;
+            }
+           else
+           {
+               $result = false;
+           }
+         }
+         return $result;
       }
 
 }
