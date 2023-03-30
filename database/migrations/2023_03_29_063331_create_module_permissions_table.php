@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('module_permissions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('module_id');
-            $table->unsignedInteger('permission_id');
+            $table->unsignedBigInteger('permission_id');
             $table->boolean('add_access')->default(false);
             $table->boolean('delete_access')->default(false);
             $table->boolean('update_access')->default(false);
