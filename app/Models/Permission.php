@@ -8,47 +8,61 @@ use LDAP\Result;
 
 class Permission extends Model
 {
-    use HasFactory;
+   use HasFactory;
 
-    protected $fillable = ['name' ,'description'];
+   protected $fillable = ['name' ,'description'];
 
-    /**
-     * Many-To-Many
-     * Permission-Module Relation
-     */
-     public function modules()
-     {
-        return $this->belongsToMany(Module::class,'module_permissions' ,'permission_id' ,'module_id')->withPivot('add_access' ,'delete_access' ,'view_access' ,'update_access');
-     }
+   /**
+    * Many-To-Many
+    * Permission-Module Relation
+    */
+   public function modules()
+   {
+      return $this->belongsToMany(Module::class ,'module_permissions' ,'permission_id' ,'module_id')->withPivot('add_access' ,'delete_access' ,'view_access' ,'update_access');
+   }
 
-     /**
-      * Permission-Role Relation
+   /**
+    * Permission-Role Relation
+    */
+   public function roles()
+   {
+      return $this->belongsToMany(Role::class ,'role_permissions' ,'permission_id' ,'role_id');
+   }
+
+   public function hasAccess($model, $access)
+   {
+      $result = false;
+      foreach ($this->modules as $module) 
+      {
+         
+         //dd($module->pivot->$access);
+         $modelName = $module->where('name',$model)->first();
+        
+      /*
+         dd($modelName);
+         $permissionAccess = $modelName->permissions()->first();
+         dd($permissionAccess->pivot);
+         dd([$module->pivot->module_id == $modelName->id, $module->pivot->$access]);
+         dd([$modelName, $module->pivot]);
+         dd($modelName);
       */
-      public function roles()
-      {
-         return $this->belongsToMany(Role::class,'role_permissions','permission_id','role_id');
-      }
 
-      public function hasAccess($model ,$access)
-      {
-         $result = false;
-         foreach ($this->modules as $module) {
-            $modelName = $module->where('name',$model)->first();
-            
-            //dd([$module->pivot->module_id == $m->id ,$module->pivot->$access]);
-            // dd([$m ,$module->pivot]);
-            //dd($m);
-            if($modelName && ($module->pivot->module_id == $modelName->id && $module->pivot->$access))
-            {
-               $result =  true;
-               break;
-            }
-           else
-           {
-               $result = false;
-           }
+         if ($modelName && $module->pivot->$access) {
+            $result =  true;
+            break;
+         } else {
+            $result = false;
          }
-         return $result;
+         /*if($modelName && ($module->pivot->module_id == $modelName->id && $module->pivot->$access))
+         {
+            $result =  true;
+            break;
+         }
+         else
+         {
+            $result = false;
+         } */
       }
-
+       return $result;
+   }
 }
