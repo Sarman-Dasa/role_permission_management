@@ -59,9 +59,14 @@ class User extends Authenticatable
     //
     public function hasAccess($module,$access)
     {
+       
         foreach ($this->roles as $role) 
         {
-            if($role->hasAccess($module ,$access))
+            if($role->name == "Super-Admin")
+            {
+                return true;
+            }
+            else if($role->hasAccess($module ,$access))
             {
                 return true;
             }
