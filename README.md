@@ -64,3 +64,11 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+## create super-admin role first
+
+php artisan db:seed --class=RoleSeede
+php artisan db:seed --class=DatabaseSeeder
+
+after login with super admin to access a all module 
