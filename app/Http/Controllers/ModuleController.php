@@ -53,7 +53,7 @@ class ModuleController extends Controller
 
     public function get($id)
     {
-        $module  = Module::findOrFail($id);
+        $module  = Module::with('permissions','permissions.roles','permissions.modules')->findOrFail($id);
 
         return ok('Module data',$module);
     }

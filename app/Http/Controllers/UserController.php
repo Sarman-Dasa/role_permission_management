@@ -27,7 +27,7 @@ class UserController extends Controller
 
     public function get($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with('roles','roles.permissions')->findOrFail($id);
         return ok('User profile',$user);
     }
 
