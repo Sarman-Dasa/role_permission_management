@@ -28,7 +28,7 @@ class ModuleController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'name'          =>  'required|string|min:5|max:150|unique:modules,name',
+            'name'          =>  'required|string|min:2|max:150|unique:modules,name',
             'description'   =>  'nullable|max:255',
         ]);
 
@@ -40,7 +40,7 @@ class ModuleController extends Controller
     public function update(Request $request ,$id)
     {
         $request->validate([
-            'name'          =>  'required|string|min:8|max:150|unique:modules,name,'.$id.',id',
+            'name'          =>  'required|string|min:2|max:150|unique:modules,name,'.$id.',id',
             'description'   =>  'nullable|max:255',
         ]);
 
