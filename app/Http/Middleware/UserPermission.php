@@ -19,22 +19,24 @@ class UserPermission
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next,$model,$access)
-    {   
-        //dd([$model,$access]);
-        //$userRole = Auth::user()->roles->pluck('name')->toArray();
-        //$permission = auth()->user()->roles()->with('permissions.modules')->get()->pluck('permissions')->flatten();
-        $permissions = auth()->user()->roles()->with('permissions.modules')->get();//->pluck('permissions');
+    {
+    
+    /*
+        dd([$model, $access]);
+        $userRole = Auth::user()->roles->pluck('name');
+        $permissions = auth()->user()->roles()->with('permissions.modules')->get(); //->pluck('permissions');
+        $permissions = auth()->user()->roles()->with('permissions.modules')->get()->pluck('permissions')->toArray();
 
-        // foreach($permissions as $permission)
-        // {
-        //     dd($permission);
-        // }
-        //dd($permission->modules());
-         // if(count($permission[0]))
-        // {
-        //     return $next($request);
-        // }
-        
+        dd($permissions);
+        if (count($permissions[0])) {
+            return $next($request);
+        }
+
+        dd($user);
+        if ($userRole[0] == "Super admin") {
+            return $next($request);
+        }
+    */
         $user = auth()->user();
         if($user->hasAccess($model,$access))
         {
