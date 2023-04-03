@@ -3,9 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Notifications\AccountVerifyMail;
+use App\Notifications\WelcomeMail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -25,7 +29,8 @@ class User extends Authenticatable
         'phone',
         'email_verify_token',
         'is_active',
-        'email_verified_at'
+        'email_verified_at',
+        'birthdate',
     ];
 
     /**
@@ -71,5 +76,22 @@ class User extends Authenticatable
                 return true;
             }
         }
+    }
+
+    //send welcome and verify mail
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function()
+        {
+            Log::info('User Creating');
+        });
+
+        static::created(function($item){
+            $item->notify(new WelcomeMail());
+            $item->notify(new AccountVerifyMail($item));
+            log::channel('customelog')->info('Mail send via model');
+        });
     }
 }
