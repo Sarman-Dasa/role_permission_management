@@ -72,3 +72,10 @@ php artisan db:seed --class=RoleSeede
 php artisan db:seed --class=DatabaseSeeder
 
 after login with super admin to access a all module 
+
+## auto send mail
+php artisan make:migration add_birthdate_column_in_users_table --table=users
+php artisan migrate
+
+php artisan make:notification BirthDayWish
+php artisan make:command AutoBirthDayWish
