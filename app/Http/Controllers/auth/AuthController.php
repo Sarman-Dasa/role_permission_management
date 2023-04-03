@@ -34,8 +34,8 @@ class AuthController extends Controller
             ]);
         
         $user->roles()->attach($request->role_id);
-        $user->notify(new WelcomeMail());
-        $user->notify(new AccountVerifyMail($user));
+        //$user->notify(new WelcomeMail());
+        //$user->notify(new AccountVerifyMail($user));
 
         return ok("Account Created Successfully");
     }
@@ -43,7 +43,7 @@ class AuthController extends Controller
     public function verifyAccount($token)
     {
  
-         $user = User::where('email_verify_token','=',$token)->first();
+         $user = User::where('email_verify_token',$token)->first();
          if($user)
          {
              $user->update([
