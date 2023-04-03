@@ -13,9 +13,16 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
+
+    protected $commands = [
+        commands\AutoBirthDayWish::class,
+    ];
+
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        //$schedule->command('auto:birthdatwish')->cron('* * * * *');
+        $schedule->command('auto:birthdatwish')->dailyAt('15:11')->timezone('Asia/Kolkata');
+        //$schedule->command('auto:birthdatwish')->dailyAt('14:21');
     }
 
     /**
@@ -28,5 +35,6 @@ class Kernel extends ConsoleKernel
         $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
+        
     }
 }
