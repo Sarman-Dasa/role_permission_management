@@ -4,12 +4,30 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+Use Illuminate\Support\Facades\Log;
 
 class Role extends Model
 {
     use HasFactory;
 
     protected $fillable = ['name' ,'description'];
+
+
+
+     //model event
+     public static function boot()
+     {
+         parent::boot();
+ 
+         static::creating(function($item){
+            Log::info('createing Event call..');
+         });
+
+
+         static::created(function($item) {            
+            Log::info('Created event call: '.$item);
+        });  
+     }
 
     /**
      * Many-To-Many
