@@ -10,7 +10,8 @@ class Error extends Model
     use HasFactory;
 
     protected $table = 'errors';
-
+    protected $connection = 'error_mysql';
+    
     protected $fillable = ['user_id', 'code', 'file', 'line', 'message', 'trace'];
 
 }
