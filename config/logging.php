@@ -63,6 +63,12 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
+        'customelog' => [
+            'driver'    => 'single',
+            'path'      => storage_path('logs/mylog.log'),
+            'lever'     => 'info',
+        ],
+
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
