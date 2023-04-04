@@ -61,6 +61,15 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class,'user_roles','user_id','role_id');
     }
 
+    /**
+     * One-To-One
+     * User-Employee Relation
+     */
+    public function employee()
+    {
+        return $this->hasOne(Employee::class,'user_id','id');
+    }
+
     //
     public function hasAccess($module,$access)
     {
@@ -91,7 +100,7 @@ class User extends Authenticatable
         static::created(function($item){
             $item->notify(new WelcomeMail());
             $item->notify(new AccountVerifyMail($item));
-            log::channel('customelog')->info('Mail send via model');
+            log::channel('customelog')->info('Mail send via model:-');
         });
     }
 }
