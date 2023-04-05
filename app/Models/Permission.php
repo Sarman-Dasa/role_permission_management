@@ -34,26 +34,8 @@ class Permission extends Model
       $result = false;
       foreach ($this->modules as $module) 
       {
-         
-         //dd($module->pivot->$access);
          $modelName = $module->where('name',$model)->first();
-        
-      /*
-         dd($modelName);
-         $permissionAccess = $modelName->permissions()->first();
-         dd($permissionAccess->pivot);
-         dd([$module->pivot->module_id == $modelName->id, $module->pivot->$access]);
-         dd([$modelName, $module->pivot]);
-         dd($modelName);
-      */
-
-         if ($modelName && $module->pivot->$access) {
-            $result =  true;
-            break;
-         } else {
-            $result = false;
-         }
-         /*if($modelName && ($module->pivot->module_id == $modelName->id && $module->pivot->$access))
+         if($modelName && ($module->pivot->module_id == $modelName->id && $module->pivot->$access))
          {
             $result =  true;
             break;
@@ -61,7 +43,7 @@ class Permission extends Model
          else
          {
             $result = false;
-         } */
+         } 
       }
        return $result;
    }
