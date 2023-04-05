@@ -50,7 +50,9 @@ Route::controller(RoleController::class)->middleware(['auth:sanctum'])->prefix('
 Route::middleware(['auth:sanctum','throttle:1|30'])->group(function () {
     Route::controller(UserController::class)->group(function () {
         Route::post('list', 'list');
+        Route::post('update', 'update');
         Route::get('get/{id}', 'get');
+        Route::delete('delete','destroy');
         Route::get('logout', 'logout');
         Route::post('change-password', 'changePassword');
     });
