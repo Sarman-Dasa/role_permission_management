@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notification;
 
 class AccountVerifyMail extends Notification
 {
+    use Queueable;
     /**
      * Create a new notification instance.
      *
