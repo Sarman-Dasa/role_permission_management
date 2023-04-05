@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Jobs\SendNotificationMail;
 use App\Notifications\AccountVerifyMail;
 use App\Notifications\WelcomeMail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -97,10 +98,10 @@ class User extends Authenticatable
             Log::info('User Creating');
         });
 
-        static::created(function($item){
-            $item->notify(new WelcomeMail());
-            $item->notify(new AccountVerifyMail($item));
-            log::channel('customelog')->info('Mail send via model:-');
+        static::created(function($user){
+            if(!$user->is_active)
+                SendNotificationMail::dispatch($user);
+            log::channel('customelog')->info('Mail send via model:- '.$user->is_active);
         });
     }
 }
