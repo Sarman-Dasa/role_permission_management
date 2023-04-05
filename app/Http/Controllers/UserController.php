@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportUser;
+use App\Imports\UserImport;
 use App\Models\User;
 use App\Traits\ListingApiTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -24,6 +27,15 @@ class UserController extends Controller
         $searchable_fields = ['first_name' , 'last_name','email' ,'phone']; 
         $data = $this->filterSearchPagination($query,$searchable_fields);
 
+        if(request()->start_date && request()->end_date)
+        {
+            return Excel::download(new ExportUser(request()->start_date,request()->end_date),'user.csv');
+        }
+        if($request->has('import_data'))
+        {
+           Excel::import(new UserImport ,$request->file('import_data'));
+           return ok("data import successfully");
+        }
         return ok('User list',[
             'users' =>  $data['query']->get(),
             'count' =>  $data['count'],
