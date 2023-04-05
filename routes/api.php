@@ -106,10 +106,5 @@ Route::controller(TaskController::class)->middleware(['auth:sanctum'])->prefix('
     Route::delete('delete/{id}', 'destroy')->middleware('user-permission:Task,delete_access');
 });
 
-Route::middleware(['auth:sanctum'])->prefix('intern')->group(function(){
-    Route::get('list',function(){
-        return "Permission";
-    })->middleware('user-permission:Intern,view_access');
-});
 
 
