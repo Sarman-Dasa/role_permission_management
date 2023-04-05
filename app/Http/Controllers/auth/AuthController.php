@@ -16,6 +16,12 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
+    /**
+     * User Registration 
+     * store user data in database
+     * @param \Illuminate\Http\Request  $request
+     * @return json response 
+     */
     public function register(Request $request)
     {
         $request->validate([
@@ -40,6 +46,11 @@ class AuthController extends Controller
         return ok("Account Created Successfully");
     }
 
+    /**
+     * verify user account 
+     * @param string token
+     * @return json response 
+     */
     public function verifyAccount($token)
     {
  
@@ -56,7 +67,12 @@ class AuthController extends Controller
              return ok('Account Already Verified');
          }
     }
- 
+    
+    /**
+     * user login 
+     * @param \Illuminate\Http\Request  $request
+     * @return json response 
+     */
     public function login(Request $request)
     {
  
@@ -74,6 +90,12 @@ class AuthController extends Controller
          return ok('Invalid Email & Password');
     }
 
+    
+    /**
+     * @func forgotPassword
+     * @param Request $request 
+     * @return json response
+     */
     public function forgotPassword(Request $request)
     {
         $request->validate([
@@ -97,6 +119,12 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @func resetPassword
+     * @description 'chnage password via password reset token'
+     * @param Request $request
+     * @return json response
+     */
     public function resetPassword(Request $request)
     {
         $request->validate([

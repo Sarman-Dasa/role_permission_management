@@ -10,6 +10,11 @@ class ModuleController extends Controller
 {
     use ListingApiTrait;
 
+     /**
+     * Display a listing of the module.
+     * @param \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function list(Request $request)
     {
         $this->ListingValidation();
@@ -25,6 +30,12 @@ class ModuleController extends Controller
         ]);
     }
 
+    /**
+     * Store a newly created module in database.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function create(Request $request)
     {
         $request->validate([
@@ -37,6 +48,13 @@ class ModuleController extends Controller
         return ok('Module data added successfully');
     }
 
+    /**
+     * Update the specified module in database.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request ,$id)
     {
         $request->validate([
@@ -51,6 +69,12 @@ class ModuleController extends Controller
         return ok('Module data updated successfully');
     }
 
+     /**
+     * Display the specified module.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function get($id)
     {
         $module  = Module::with('permissions','permissions.roles','permissions.modules')->findOrFail($id);
@@ -58,6 +82,12 @@ class ModuleController extends Controller
         return ok('Module data',$module);
     }
 
+    /**
+     * Remove the specified module from database.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
         $module  = Module::findOrFail($id);
