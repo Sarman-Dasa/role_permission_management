@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+//use App\Facades\ItDateClass;
+
+use App\Facades\ItDateClass;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +16,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind('itdateclass',function(){
+            return new ItDateClass();
+        });
     }
 
     /**
