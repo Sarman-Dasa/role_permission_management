@@ -9,6 +9,7 @@ use App\Traits\ListingApiTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
+use myDate;
 
 class UserController extends Controller
 {
@@ -88,8 +89,9 @@ class UserController extends Controller
      */
     public function logout()
     {
-        $user = auth()->user()->tokens();
-        $user->delete();
+        // $user = auth()->user()->tokens();
+        // $user->delete();
+        myDate::logout();
     }
 
     /**
