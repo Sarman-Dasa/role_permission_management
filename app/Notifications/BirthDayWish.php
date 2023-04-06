@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class BirthDayWish extends Notification
+class BirthDayWish extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -43,7 +43,6 @@ class BirthDayWish extends Notification
     {
         return (new MailMessage)
                     ->line('Happy Birthday ,'.$this->user->first_name)
-                    ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');
     }
 
