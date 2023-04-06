@@ -79,3 +79,18 @@ php artisan migrate
 
 php artisan make:notification BirthDayWish
 php artisan make:command AutoBirthDayWish
+php artisan schedule:work
+
+
+## job & Queue
+php artisan queue:table
+php artisan migrate
+php artisan make:job SendNotificationMail
+php artisan make:job SendBirthdayWishJob
+
+## import & Export data 
+composer require maatwebsite/excel
+php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider" --tag=config
+php artisan make:export ExportEmployee --model=Employee
+php artisan make:import ImportEmployee --model=Employee
+
