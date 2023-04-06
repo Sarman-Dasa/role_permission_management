@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\SendBirthdayWishJob;
 use App\Models\User;
 use App\Notifications\BirthDayWish;
 use Illuminate\Console\Command;
@@ -36,7 +37,9 @@ class AutoBirthDayWish extends Command
         if($users->count() > 0)
         {
             foreach ($users as $user) {
-                $user->notify(new BirthDayWish($user));
+               // $user->notify(new BirthDayWish($user));
+                dispatch(new SendBirthdayWishJob($user));
+                //SendBirthdayWishJob::dispatch($user);
             }
         }
         return 0;
