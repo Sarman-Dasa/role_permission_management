@@ -7,7 +7,6 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -106,5 +105,15 @@ Route::controller(TaskController::class)->middleware(['auth:sanctum'])->prefix('
     Route::delete('delete/{id}', 'destroy')->middleware('user-permission:Task,delete_access');
 });
 
+/**
+ * Route For check custome facade
+ */
 
-
+ Route::get('it-date-class',function()
+ {
+    // $getYMD = myDate::dateFormatYMD('06/04/2023');
+    // return $getYMD;
+    $dateYMD =  myDate::dateFormatYMD('06/04/2023');
+    $dateDMY = mydate::dateFormatMDY('2023-04-06');
+    return ["YMD " => $dateYMD,"DMY " => $dateDMY];
+ });
