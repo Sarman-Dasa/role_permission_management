@@ -3,10 +3,13 @@
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\web\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -117,3 +120,30 @@ Route::controller(TaskController::class)->middleware(['auth:sanctum'])->prefix('
     $dateDMY = mydate::dateFormatMDY('2023-04-06');
     return ["YMD " => $dateYMD,"DMY " => $dateDMY];
  });
+/**
+ * Save Device token and send push notification 
+ */
+ Route::post('/save-token', [HomeController::class, 'saveToken'])->name('save-token');
+ Route::post('/send-notification', [HomeController::class, 'sendNotification'])->name('send.notification');
+
+/**
+ * Gates middleware 
+ */
+Route::controller(ProductController::class)->middleware(['auth:sanctum'])->prefix('product')->group(function()
+{
+    Route::post('list', 'list')->middleware('can:isAdmin');
+    Route::post('create', 'create')->middleware('can:isHr');
+    Route::post('update', 'update')->middleware('can:isAdmin');
+    Route::get('get', 'get')->middleware('can:isEmployee');
+    Route::delete('delete', 'destroy')->middleware('can:isAdmin');
+});
+
+Route::controller(OrderController::class)->middleware(['auth:sanctum'])->prefix('order')->group(function()
+{
+    Route::post('list', 'list');
+    Route::post('create', 'create');
+    Route::post('update', 'update');
+    Route::get('get', 'get');
+    Route::delete('delete', 'destroy');
+});
+
