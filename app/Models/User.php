@@ -32,6 +32,7 @@ class User extends Authenticatable
         'is_active',
         'email_verified_at',
         'birthdate',
+        'device_token',
     ];
 
     /**
