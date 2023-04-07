@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Throwable;
@@ -86,6 +87,15 @@ class Handler extends ExceptionHandler
 
             else if ($exception instanceof ThrottleRequestsException) {
                 return error('Too Many Attempts');
+            }
+
+            else if($exception instanceof AccessDeniedHttpException)
+            {
+                return error("Access denied!!!",[],'unauthenticated');
+            }
+            else
+            {
+                return error("Other Error",$exception->getMessage());
             }
 
         });
