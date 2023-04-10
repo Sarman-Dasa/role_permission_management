@@ -7,9 +7,11 @@ use App\Imports\UserImport;
 use App\Models\User;
 use App\Traits\ListingApiTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use myDate;
+use PDF;
 
 class UserController extends Controller
 {
@@ -23,7 +25,7 @@ class UserController extends Controller
     public function list(Request $request)
     {
         $this->ListingValidation();
-        
+    
         $query = User::query();
         $searchable_fields = ['first_name' , 'last_name','email' ,'phone']; 
         $data = $this->filterSearchPagination($query,$searchable_fields);
@@ -32,10 +34,18 @@ class UserController extends Controller
         {
             return Excel::download(new ExportUser(request()->start_date,request()->end_date),'user.csv');
         }
+        
         if($request->has('import_data'))
         {
            Excel::import(new UserImport ,$request->file('import_data'));
            return ok("data import successfully");
+        }
+
+        if($request->pdf)
+        {
+            $users = $data['query']->get();
+            $user = PDF::loadView('userPdf',compact('users'));
+           return $user->download("user.pdf");
         }
         return ok('User list',[
             'users' =>  $data['query']->get(),
