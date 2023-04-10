@@ -94,3 +94,9 @@ php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider" -
 php artisan make:export ExportEmployee --model=Employee
 php artisan make:import ImportEmployee --model=Employee
 
+## Generate PDF File
+Install DomPDF Package
+    composer require barryvdh/laravel-dompdf
+
+## install twillo package for send otp
+composer require twilio/sdk
